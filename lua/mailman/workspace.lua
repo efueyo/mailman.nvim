@@ -45,6 +45,9 @@ end
 
 function M.Test()
   local name = vim.fn.input("Workspace name: ")
+  if name == "" then
+    return vim.api.nvim_err_writeln("Workspace name cannot be empty")
+  end
   local wk = new_workspace(name)
   M._save(wk)
   local wkspaces = M.list()
