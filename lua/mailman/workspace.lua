@@ -35,6 +35,10 @@ function M.create()
   return workspace
 end
 
+function M.get(name)
+  local wk = M.list()[name]
+  return wk
+end
 
 function M._save(workspace)
   local workspaces = M.list()
@@ -52,6 +56,7 @@ function M.Test()
   M._save(wk)
   local wkspaces = M.list()
   print(vim.inspect(wkspaces))
+  M.get("aaa")
 end
 
 return M
