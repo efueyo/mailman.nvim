@@ -17,32 +17,27 @@ local all_workspaces = nil
 
 local M = {}
 
-function M.get_workspaces()
+function M.list()
   if all_workspaces == nil then
-    all_workspaces = M._load_workspaces()
+    local workspaces_str = utils.read_if_exists(workspaces_file)
+    if workspaces_str == nil then
+      all_workspaces = {}
+    else
+      all_workspaces = vim.fn.json_decode(workspaces_str) or {}
+    end
   end
   return all_workspaces
 end
 
-function M.create_workspace()
+function M.create()
   local name = vim.fn.input("Workspace name: ")
   local workspace = new_workspace(name)
   return workspace
 end
 
 
--- get all workspaces from the data folder
-function M._load_workspaces()
-  local workspaces_str = utils.read_if_exists(workspaces_file)
-  if workspaces_str == nil then
-    return {}
-  end
-  local workspaces = vim.fn.json_decode(workspaces_str) or {}
-  return workspaces
-end
-
-function M._save_workspace(workspace)
-  local workspaces = M._load_workspaces()
+function M._save(workspace)
+  local workspaces = M.list()
   workspaces[workspace.name] = workspace
   local workspaces_str = vim.fn.json_encode(workspaces)
   utils.write_file(workspaces_file, workspaces_str)
@@ -51,8 +46,8 @@ end
 function M.Test()
   local name = vim.fn.input("Workspace name: ")
   local wk = new_workspace(name)
-  M._save_workspace(wk)
-  local wkspaces = M._load_workspaces()
+  M._save(wk)
+  local wkspaces = M.list()
   print(vim.inspect(wkspaces))
 end
 
