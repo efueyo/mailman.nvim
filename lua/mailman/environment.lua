@@ -31,6 +31,9 @@ function M.edit(wk_name, env_name, env, on_save)
           goto continue
         end
         local k, v = line:match("([^=]+)=(.+)")
+        if not k or not v then
+          goto continue
+        end
         new_env[k] = v
         ::continue::
       end
