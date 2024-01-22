@@ -1,15 +1,15 @@
 local M = {}
 
-function M.edit(name, env, on_save)
+function M.edit(wk_name, env_name, env, on_save)
   --open a new buffer with the environment
   --once saved the environment will be updated
 
   local buf = vim.api.nvim_create_buf(true, false)
-  vim.api.nvim_buf_set_name(buf, "Mailman env " .. name)
+  vim.api.nvim_buf_set_name(buf, "Mailman env " .. wk_name .. " " .. env_name)
   vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
   vim.api.nvim_buf_set_option(buf, "buftype", "nofile")
   local content = {}
-  table.insert(content, "-- Editing env " .. name)
+  table.insert(content, "-- Editing env " .. env_name .. " for workspace " .. wk_name)
   table.insert(content, "-- Every line that starts with -- will be ignored")
   table.insert(content, "-- env variables are in the form key=value")
   -- add instructions to content
@@ -38,6 +38,5 @@ function M.edit(name, env, on_save)
     end,
   })
 end
-
 
 return M
